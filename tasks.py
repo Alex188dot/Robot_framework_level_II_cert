@@ -1,5 +1,6 @@
 from robocorp.tasks import task
 from robocorp import browser
+from PIL import Image
 from RPA.Excel.Files import Files
 from RPA.HTTP import HTTP
 from RPA.PDF import PDF
@@ -105,6 +106,9 @@ def fill_the_form():
             page.click("css=#order")
             next_order_button = page.query_selector("css=#order-another")
             if next_order_button:
+                store_receipt_as_pdf(order["Order number"])
+                screenshot = screenshot_robot(order["Order number"])
+                embed_screenshot_to_receipt(screenshot, order["Order number"])
                 page.click("css=#order-another")
                 print("Order successful")
                 close_annoying_modal()
@@ -116,9 +120,7 @@ def fill_the_form():
                     
         
 
-            # screenshot_robot(order["Order number"])
-            # store_receipt_as_pdf(order["Order number"])
-            # # embed_screenshot_to_receipt(receipt, screenshot)
+
             
 
 
@@ -132,21 +134,24 @@ def store_receipt_as_pdf(order_number):
     return path
     
 
+
 def screenshot_robot(order_number):
     page = browser.page()
+    element = page.query_selector("#robot-preview-image")
     path = f"output/{order_number}.png"
-    page.screenshot(path=path)
+    element.screenshot(path=path)
+    image = Image.open(path)
+    resized_image = image.resize((500, int(image.height * (500 / image.width))))
+    resized_image.save(path)
     return path
     
-def embed_screenshot_to_receipt(screenshot, pdf_file):
+def embed_screenshot_to_receipt(screenshot, order_number):
     pdf = PDF()
     list_of_files = [
-        pdf_file,
         screenshot
     ]
     pdf.add_files_to_pdf(
         files=list_of_files,
-        target_document = f"output/merged_{pdf_file}"    
+        target_document=f"output/{order_number}.pdf",
+        append=True
     )
-    
-    
