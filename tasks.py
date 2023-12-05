@@ -154,11 +154,11 @@ def embed_screenshot_to_receipt(screenshot, order_number):
     ]
     pdf.add_files_to_pdf(
         files=list_of_files,
-        target_document=f"output/merged/{order_number}.pdf",
+        target_document=f"output/{order_number}.pdf",
         append=True
     )
     
 
 def archive_receipts():
     lib = Archive()
-    lib.archive_folder_with_zip('output/merged', 'merged.zip')
+    lib.archive_folder_with_zip('output/', 'merged.zip')
