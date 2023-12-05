@@ -6,6 +6,7 @@ from RPA.HTTP import HTTP
 from RPA.PDF import PDF
 from RPA.Tables import Tables
 import time
+from RPA.Archive import Archive
 
 
 
@@ -27,6 +28,7 @@ def order_robots_from_RobotSpareBin():
     download_excel_file()
     get_orders()    
     fill_the_form()
+    archive_receipts()
 
     
     
@@ -152,6 +154,11 @@ def embed_screenshot_to_receipt(screenshot, order_number):
     ]
     pdf.add_files_to_pdf(
         files=list_of_files,
-        target_document=f"output/{order_number}.pdf",
+        target_document=f"output/merged/{order_number}.pdf",
         append=True
     )
+    
+
+def archive_receipts():
+    lib = Archive()
+    lib.archive_folder_with_zip('output/merged', 'merged.zip')
