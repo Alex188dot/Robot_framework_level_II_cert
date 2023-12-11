@@ -1,4 +1,4 @@
-# Template: Python - Minimal
+# Robot Framework Level II Certification
 
 This repo includes a robot program from the Robocorp Python [rpaframework](https://github.com/robocorp/rpaframework). This robot was created as an assigment for the level II certification and was bootstrapped with the Python - Minimal template. In order for you to run this, you should install on VS Code the following extensions: Robocorp Code and Robot Framework Language Server. In the conda.yaml file you will find all the dependencies which should not be installed with 'pip install...', that is what this file is here for. 
 
